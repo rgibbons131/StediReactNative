@@ -2,13 +2,31 @@ import {useState} from "react";
 import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text } from "react-native";
 
 const sendText = async (phoneNumber) => {
-  await fetch("https://dev.stedi.me/twofactorlogin/"+phoneNumber,{
+  const loginResponse = await fetch("https://dev.stedi.me/twofactorlogin/"+phoneNumber,{
     method: 'post',
     headers: {
       'Content-Type': 'application/text'
     }
-  })
+  });
+  const loginResponseText = await loginResponse.text()
   console.log("PhoneNumber:",phoneNumber);
+  console.log('Login Response',loginResponseText);
+}
+
+const getToken = async ({phoneNumber, oneTimePassword}) => {
+  console.log(phoneNumber);
+  console.log(oneTimePassword);
+  const loginResponse = await fetch("https://dev.stedi.me/twofactorlogin",{
+    method: 'POST',
+    headers:{'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      phoneNumber,
+      oneTimePassword
+    })
+
+  });
+  const token = await loginResponse.text();
+  console.log(token)
 }
 
 const Login = () => {
@@ -43,7 +61,7 @@ const Login = () => {
       
       <TouchableOpacity
       style={styles.button}
-      onPress={()=>sendText(phoneNumber)}
+      onPress={()=>getToken({phoneNumber, oneTimePassword})}
       >
         <Text>Login</Text>        
       </TouchableOpacity>
