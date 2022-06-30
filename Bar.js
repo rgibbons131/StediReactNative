@@ -4,11 +4,12 @@ import AppName from "./AppName";
 import Setting from "./Setting";
 
 function Bar(props) {
-    console.log('Logged In User: '+props.loggedInUser)
+    console.log('Logged In User: '+props.userEmail)
     return(
         <View style={styles.bar}>
             <AppName />
-            <Setting />  
+            <Setting />
+            <Text>Logged In User: {props.userEmail}</Text>  
         </View>
     )
   }
